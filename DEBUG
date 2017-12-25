@@ -1,0 +1,264 @@
+1.*****No module named cv*****
+
+>>sudo apt-get install python-opencv
+  source ~/.bashrc
+--doesn't work.
+
+>>>source activate /home/chang/anaconda2
+   conda install opencv 
+---work and make sure you install anaconda first. 
+
+===================================================================================================================================
+
+2.*****如1安装后，no module named cv2.cv*****
+>>>需再安装cv，或直接使用cv2，cv2和cv区别：
+ 
+
+**************************
+//blog.csdn.net/summermaoz/article/details/67637325
+将代码放在师姐电脑上跑的时候，用的是python2.7
+出现cv2.cv，没有cv这个属性，在命令行import cv 时出错，没有cv这个module，但是可以import cv2，解决方式是下载安装opencv。
+1、两个下载模块的地址： https://pypi.python.org/pypi
+2、介绍cv:  http://www.programcreek.com/python/index/413/cv
+安装cv2模块：whl文件可以
+安装cv模块（可以不要cv模块）
+opencv版本问题，3.x不能cv2.cv, 2.x可以
+例子：
+           videocapture = cv2.VideoCapture(VideoFile)
+安装cv:    fps = videocapture.get(cv2.cv.CV_CAP_PROP_FPS)
+未安装从v：fps = videocapture.get(cv2.CAP_PROP_FPS)
+
+3、两者区别：
+cv2扩展库是针对OpenCV 2.x API创建的，直接采用NumPy的数组对象表示图像，和pyopencv相比，不再需要在数组和Mat对象之间相互转换了。
+cv2的函数直接对Numpy数组进行操作，
+cv2读取图像是数组，array = cv2.imread()
+
+（1）cv读取图像：
+①iplimage = cv.LoadImage()  
+<type 'cv2.cv.iplimage'>
+<iplimage(nChannels=3 width=1212 height=824 widthStep=3636 )>
+②cvmat = cv.LoadImageM()
+<type 'cv2.cv.cvmat'>
+<cvmat(type=42424010 8UC3 rows=824 cols=1212 step=3636 )>
+
+（2）array, iplimage, cvmat 转换
+array------>     cvmat:        cv.fromarray(array)
+cvmat------>    array:         np.asarray(cvamt)
+cvmat------>    iplimage:    cv.GetImage(cvmat)  
+iplimage---->   cvmat:       iplimage[:], 或 cv.GetMat(iplimage)
+
+**************************
+
+===================================================================================================================================
+
+3.******after conda install opencv,cv2.VideoCapture.isOpened() always return false********
+---opencv is not installed correctly.
+>>>conda uninstall opencv
+>>>copy cv2.so from /usr/lib/python2.7/dist-packages/cv2.so to /anaconda2/lib/python2.7/site-packages/cv2.so
+===================================================================================================================================
+
+4.*****更改anaconda镜像********
+>>>按照https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/的命令
+	conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+	conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+	conda config --set show_channel_urls yes
+>>>conda config --show可以查看
+>>>可以继续修改default_channels:gedit ~/.condarc
+	channels:
+	  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+	  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+	  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+	  - defaults
+	default_channels:
+	  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+	  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+	  - https://repo.continuum.io/pkgs/free
+	  - https://repo.continuum.io/pkgs/r
+	  - https://repo.continuum.io/pkgs/pro
+	show_channel_urls: true
+===================================================================================================================================
+
+
+ubuntu查看已安装：dpkg --list
+
+
+===================================================================================================================================
+5.*****python中利用rarfile解压文件
+>>>pip install rarfile
+   
+   import rarfile
+   file = rarfile.RarFile('file_name')  #这里写入的是需要解压的文件，别忘了加路径
+   file.extractall('you_want_path')  #这里写入的是你想要解压到的文件夹
+   file.close()
+===================================================================================================================================
+
+6.*****python递归删除非空文件*****
+   
+   import shutil
+   shutil.rmtree('/folder_name')
+---存在只读文件删除失败
+
+   import shutil
+   shutil.rmtree(dest, ignore_errors=True)
+---存在只读文件等报错时，会忽略错误。
+
+   shutil.rmtree(path,ignore_errors=False,onerror=errorRemoveReadonly) 
+   def errorRemoveReadonly(func, path, exc):
+       excvalue = exc[1]
+       if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:
+	   # change the file to be readable,writable,executable: 0777
+	   os.chmod(path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)  
+	   # retry
+	   func(path)
+       else:
+	   raiseenter code here
+---删除只读文件
+
+>>>利用os.work
+	# Delete everything reachable from the directory named in 'top',
+	# assuming there are no symbolic links.
+	# CAUTION:  This is dangerous!  For example, if top == '/', it
+	# could delete all your disk files.
+	import os
+	def rmAllDirs(top):
+	    if top=='/':
+		print "DANGEROUS!YOU MAY DELETE ALL FILES IN SYSTEM."
+	    else:
+		for root, dirs, files in os.walk(top, topdown=False):
+		    for name in files:
+		        os.remove(os.path.join(root, name))
+		    for name in dirs:
+		        os.rmdir(os.path.join(root, name))
+		os.rmdir(top)
+
+
+===================================================================================================================================
+7.******关于一个进度条*****
+---安装一个类似插件的包tqdm，可以很方便将for循环的运行进度以进度条的方式展现出来
+   tqdm主页：https://pypi.python.org/pypi/tqdm
+   看到一句话：tqdm means “progress” in Arabic (taqadum, تقدّم) and an abbreviation for “I love you so much” in Spanish (te quiero demasiado).
+   
+>>>pip install tqdm
+
+   from tqdm import tqdm
+   for i in tqdm(range(10000)):
+    ...
+
+=====================================================================================================================================================
+8.
+tensorflow about:
+when load trained GoogleNet to extract feature map:
+   ************************************************************** 
+   [libprotobuf ERROR google/protobuf/io/coded_stream.cc:207] A protocol message was rejected because it was too big (more than 67108864 bytes).  To increase the limit (or to disable these warnings), see CodedInputStream::SetTotalBytesLimit() in google/protobuf/io/coded_stream.h.
+Traceback (most recent call last):
+                   ...
+      graph_def.ParseFromString(f.read())
+    google.protobuf.message.DecodeError: Error parsing message 
+   **************************************************************
+>>>pip show protobuf
+---显示protobuf为3.0.0版本，这个版本parse limit是64M
+>>>conda search protobuf
+---可以看到最新3.5.0版本的
+>>>conda install protobuf
+---安装最新版本protobuf，最新版本的parse limit由64M升至2G，可以解决问题
+>>>pip show protobuf
+---显示为3.5.0版本，重新运行程序，问题解决
+
+参考https://github.com/tensorflow/tensorflow/issues/582中的答案，其中一个方案是改protobuf代码，重新编译，这个做法比较麻烦；后面有protobuf开发人员回答，直接更新版本可以解决问题https://github.com/tensorflow/tensorflow/issues/8187 所以看这些解决方案一定要耐心看到最后。
+
+=====================================================================================================================================================
+9.np.save()和np.load()
+---np.save()可以将多个array分多次保存再同一个.npy文件中，但是注意这种情况下np.load()不会一次性将.npy所有内容加载，而是每次load()对应一次save()的内容
+
+---注意以下两个例子输出的差别：
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+f = file('/data/UCF11/npys/test.npy', 'ab')
+x= []
+a = np.array([[1,2,3],[4,5,6]])
+x.append(a)
+a = np.array([[11,12,13],[11,15,16]])
+x.append(a)
+np.save(f,x)
+f.close()
+f = file('/data/UCF11/npys/test.npy', 'rb')
+np.load(f)
+
+Out: 
+array([[[ 1,  2,  3],
+        [ 4,  5,  6]],
+       [[11, 12, 13],
+        [11, 15, 16]]])
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+f = file('/data/UCF11/npys/test.npy', 'ab')
+x= []
+a = np.array([[1,2,3],[4,5,6]])
+x.append(a)
+a = np.array([[11,12,13],[11,15,16]])
+x.append(a)
+np.save(f,x[0])
+np.save(f,x[1])
+f.close()
+f = file('/data/UCF11/npys/test.npy', 'rb')
+np.load(f)
+
+Out: 
+array([[1, 2, 3],
+       [4, 5, 6]])
+
+np.load(f)
+Out: 
+array([[11, 12, 13],
+       [11, 15, 16]])
+
+=====================================================================================================================================================
+10.python获取系统当前时间，输入日期时间
+
+*******************************************************************
+import time
+time.localtime(time.time())
+time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+*******************************************************************
+
+print time.time()
+输出的结果是：
+1357723206.31
+
+用time.localtime()方法，作用是格式化时间戳为本地的时间。
+输出的结果是：
+time.struct_time(tm_year=2010, tm_mon=7, tm_mday=19, tm_hour=22, tm_min=33, tm_sec=39, tm_wday=0, tm_yday=200, tm_isdst=0)
+
+最后用time.strftime()方法，把刚才的一大串信息格式化成我们想要的东西，输出时间日期
+
+ime.strftime里面有很多参数，可以让你能够更随意的输出自己想要的东西：
+下面是time.strftime的参数：
+strftime(format[, tuple]) -> string
+将指定的struct_time(默认为当前时间)，根据指定的格式化字符串输出
+python中时间日期格式化符号：
+%y 两位数的年份表示（00-99）
+%Y 四位数的年份表示（000-9999）
+%m 月份（01-12）
+%d 月内中的一天（0-31）
+%H 24小时制小时数（0-23）
+%I 12小时制小时数（01-12） 
+%M 分钟数（00=59）
+%S 秒（00-59）
+
+%a 本地简化星期名称
+%A 本地完整星期名称
+%b 本地简化的月份名称
+%B 本地完整的月份名称
+%c 本地相应的日期表示和时间表示
+%j 年内的一天（001-366）
+%p 本地A.M.或P.M.的等价符
+%U 一年中的星期数（00-53）星期天为星期的开始
+%w 星期（0-6），星期天为星期的开始
+%W 一年中的星期数（00-53）星期一为星期的开始
+%x 本地相应的日期表示
+%X 本地相应的时间表示
+%Z 当前时区的名称
+%% %号本身 
+=====================================================================================================================================================
+11.
