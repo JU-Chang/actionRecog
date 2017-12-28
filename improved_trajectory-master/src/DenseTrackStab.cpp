@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 			"{ t  | nt_cell  | 3 | discriptor parameter }"
 			"{ A  | scale_num  | 8 | num of scales }"
 			"{ I  | init_gap  | 1 | gap }"
-			"{ T  | show_track | 0 | whether show tracks}"
+			"{ T  | show_track | 1 | whether show tracks}"
 		};
 	CommandLineParser cmd(argc, argv, keys);
 	string video = cmd.get<string>("video_file");

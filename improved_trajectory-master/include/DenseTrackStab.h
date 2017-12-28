@@ -2,7 +2,8 @@
 #define DENSETRACKSTAB_H_
 
 #include <opencv/cv.h>
-#include <opencv/highgui.h>
+//@zz
+//#include <opencv/highgui.h>
 #include <opencv/cxcore.h>
 #include <ctype.h>
 #include <unistd.h>

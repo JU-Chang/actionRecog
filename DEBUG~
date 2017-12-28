@@ -26,7 +26,7 @@ opencv版本问题，3.x不能cv2.cv, 2.x可以
 例子：
            videocapture = cv2.VideoCapture(VideoFile)
 安装cv:    fps = videocapture.get(cv2.cv.CV_CAP_PROP_FPS)
-未安装从v：fps = videocapture.get(cv2.CAP_PROP_FPS)
+未安装cv：fps = videocapture.get(cv2.CAP_PROP_FPS)
 
 3、两者区别：
 cv2扩展库是针对OpenCV 2.x API创建的，直接采用NumPy的数组对象表示图像，和pyopencv相比，不再需要在数组和Mat对象之间相互转换了。
@@ -260,5 +260,60 @@ python中时间日期格式化符号：
 %X 本地相应的时间表示
 %Z 当前时区的名称
 %% %号本身 
+
 =====================================================================================================================================================
-11.
+11.iDT的编译需要有两个库的支持：
+    OpenCV library (tested with OpenCV-2.4.11)
+    ffmpeg library (tested with ffmpeg-0.11.1)
+>>>opencv的安装：
+   sudo apt-get update
+   sudo apt-get install libcv-dev
+   
+   ******安装过程中出现matlab接口相关配置，需要提供matlab安装路径******
+   ---先安装matlab:参考 《linux下安装matlab.doc》
+=====================================================================================================================================================
+12.
+cd iDT-master
+make
+>>>make出错：
+(1)DenseTrackStab.h:24:39: fatal error: opencv2/nonfree/nonfree.hpp: No such file or directory
+ #include "opencv2/nonfree/nonfree.hpp"
+
+---解决方案：安装nonfree
+#大概是添加源？
+sudo add-apt-repository --yes ppa:xqms/opencv-nonfree  
+sudo apt-get update 
+sudo apt-get install libopencv-nonfree-dev
+
+(2)DenseTrackStab.h:5:28: fatal error: opencv/highgui.h: No such file or directory
+ #include <opencv/highgui.h>
+---/usr/include/opecv中确实没有highgui.h，直接注释 #include <opencv/highgui.h>这一行
+
+(3)/usr/bin/ld: cannot find -lavdevice
+---查看/usr/lib是否有 libavdevice.so.n(n表示数字)
+sudo find /use/lib -name "libavdevice.so.*"
+然后用软连接：
+ln -s libavdevice.so.n libavdevice.so
+---或者，搜索系统有没有"libavdevice.so"
+sudo cp libavdevice.so /usr/lib
+---如果以上不行，手动编译安装ffmpeg(参考《安装ffmpeg》),并将安装目录下的的lib文件夹的libavdevice.so拷贝至/usr/lib
+
+---执行：
+cd release 
+DenseTrackStab video_file [options]
+Options:
+  -h                        Display this message and exit
+  -S [start frame]          The start frame to compute feature (default: S=0 frame)
+  -E [end frame]            The end frame for feature computing (default: E=last frame)
+  -L [trajectory length]    The length of the trajectory (default: L=15 frames)
+  -W [sampling stride]      The stride for dense sampling feature points (default: W=5 pixels)
+  -N [neighborhood size]    The neighborhood size for computing the descriptor (default: N=32 pixels)
+  -s [spatial cells]        The number of cells in the nxy axis (default: nxy=2 cells)
+  -t [temporal cells]       The number of cells in the nt axis (default: nt=3 cells)
+  -H [human bounding box]   The human bounding box file to remove outlier matches (default: None)
+
+ref:lear.inrialpes.fr/people/wang/improved_trajectories
+
+=====================================================================================================================================================
+13.
+
