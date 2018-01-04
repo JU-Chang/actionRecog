@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.8)
+set(OpenCV_INCLUDE_DIRS /usr/include)
+set(OpenCV_LIBS opencv_core opencv_highgui opencv_video opencv_imgproc opencv_calib3d opencv_features2d opencv_nonfree opencv_ocl avformat avutil avcodec swscale avdevice ) 
+project( DenseTrackStab )
+#find_package( opencv REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} include/)
+add_executable( DenseTrackStab src/DenseTrackStab.cpp )
+target_link_libraries( DenseTrackStab ${OpenCV_LIBS}  )

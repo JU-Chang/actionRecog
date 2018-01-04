@@ -1,0 +1,3 @@
+//anaconda
+cd /opt/anaconda/
+./install_anaconda.sh

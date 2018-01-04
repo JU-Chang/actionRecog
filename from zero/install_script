@@ -1,0 +1,10 @@
+//anaconda
+cd /opt/anaconda/
+./install_anaconda.sh
+
+//tensorflow-gpu 0.11
+conda create -n tensorflow Python=2.7
+source activate tensorflow
+pip install \
+  -i https://pypi.tuna.tsinghua.edu.cn/simple/ \
+  -upgrade https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow-0.11.0-cp27-none-linux_x86_64.whl

@@ -55,6 +55,8 @@ iplimage---->   cvmat:       iplimage[:], 或 cv.GetMat(iplimage)
 ---opencv is not installed correctly.
 >>>conda uninstall opencv
 >>>copy cv2.so from /usr/lib/python2.7/dist-packages/cv2.so to /anaconda2/lib/python2.7/site-packages/cv2.so
+
+>>pip install opencv-python
 ===================================================================================================================================
 
 4.*****更改anaconda镜像********
@@ -166,6 +168,28 @@ Traceback (most recent call last):
 
 参考https://github.com/tensorflow/tensorflow/issues/582中的答案，其中一个方案是改protobuf代码，重新编译，这个做法比较麻烦；后面有protobuf开发人员回答，直接更新版本可以解决问题https://github.com/tensorflow/tensorflow/issues/8187 所以看这些解决方案一定要耐心看到最后。
 
+
+在pycharm运行程序时，报错
+   **************************************************************
+E tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded runtime CuDNN library: 7001 (compatibility version 7000) but source was compiled with 5105 (compatibility version 5100).  If using a binary install, upgrade your CuDNN library to match.  If building from sources, make sure the library loaded at runtime matches a compatible version specified during compile configuration.
+   **************************************************************
+查看cudnn版本
+cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
+查看cuda版本
+cat /usr/local/cuda/version.txt
+
+---官网下载(需要注册）相应版本cudnn，解压，添加环境变量
+>>>gedit ～/.bashrc
+增加一行export LD_LIBRARY_PATH=/path/to/cudnn/lib64：$LD_LIBRARY_PATH
+>>>source ～/.bashrc
+LD_LIBRARY_PATH  这个环境变量告诉loader：在哪些目录中可以找到共享库。可以设置多个搜索目录，这些目录之间用冒号分隔开。
+REF:http://m.blog.csdn.net/zhaishengfu/article/details/52333674
+
+如上配置后，命令行python运行没问题，pycharm仍然报错
+---需要在pycharm中配置环境变量:菜单-run-Edit Configurations,在环境变量一栏填入LD_LIBRARY_PATH和/path/to/cudnn/lib64
+REF:http://blog.csdn.net/e_walle/article/details/70158005
+
+GPU:http://blog.csdn.net/guvcolie/article/details/77164230
 =====================================================================================================================================================
 9.np.save()和np.load()
 ---np.save()可以将多个array分多次保存再同一个.npy文件中，但是注意这种情况下np.load()不会一次性将.npy所有内容加载，而是每次load()对应一次save()的内容
@@ -334,3 +358,11 @@ apt-get install meld
 14.#include "opencv2/gpu/gpu.hpp" 但不存在这个文件
 下载gpu.hpp放在opencv2?
 https://github.com/abhi-kumar/Hexapod
+
+
+
+=====================================================================================================================================================
+=====================================================================================================================================================
+
+ubuntu 14.04 终端历史命令保存在 ～/.bash_history：
+
