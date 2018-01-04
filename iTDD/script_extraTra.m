@@ -2,10 +2,9 @@
 
 vid_name = 'test.avi';
 
-% @zz:extract already
-% % idt extraction
-% display('Extract improved trajectories...');
-% system(['./DenseTrackStab -f ',vid_name,' -o ',vid_name(1:end-4),'.bin']);
+% idt extraction
+display('Extract improved trajectories...');
+system(['./DenseTrackStab -f ',vid_name,' -o ',vid_name(1:end-4),'.bin']);
 
 % @zz:comment
 % % TVL1 flow extraction
