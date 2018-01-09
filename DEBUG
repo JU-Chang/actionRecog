@@ -354,14 +354,77 @@ apt-get install meld
 界面很不错哦。
 
 =====================================================================================================================================================
+14.MATLAB
+###文件操作####
+dir(pathOfFile)
+----return a struct {name:  ,bytes:   ,...}
+----空文件夹存在:. ..
+    a = dir(emptydir)
+    a{1}.name == '.'   ;   a{2}.name == '..'
+    length(a) == 2 
 
-14.#include "opencv2/gpu/gpu.hpp" 但不存在这个文件
-下载gpu.hpp放在opencv2?
-https://github.com/abhi-kumar/Hexapod
-
+fullfile(dir1,dir2,filename)
+----相当于python的os.path.join
+=====================================================================================================================================================
+15.ubuntu运行程序
+./filename
+//path/to/file/filename
 
 
 =====================================================================================================================================================
+16.matlab system报错：
+>> system(['/home/chang/code/actionRecog/iTDD/DenseTrackStab -f /home/chang/code/actionRecog/improved_trajectory/v_Bowling_g01_c01.avi -T 1']);
+Could not initialize capturing /home/chang/code/actionRecog/improved_trajectory/v_Bowling_g01_c01.avi
+/home/chang/code/actionRecog/iTDD/DenseTrackStab -f /home/chang/code/actionRecog/improved_trajectory/v_Bowling_g01_c01.avi -T 1: Signal 127
+
+---Could not initialize capturing是因为找不到正确的.so的库，无法打开视频
+---在terminal中输入相同命令，却可以正确执行：
+>>>/home/chang/code/actionRecog/iTDD/DenseTrackStab -f /home/chang/code/actionRecog/improved_trajectory/v_Bowling_g01_c01.avi -T 1
+
+---matlab使用自带的opencv库，在终端执行下面命令和在matlab用system执行，可以看到使用的动态库不同
+>>>ldd /home/chang/code/actionRecog/iTDD/DenseTrackStab
+---修改matlab使用的库的路径（系统opencv库在/usr/lib路径下）：
+>>setenv('LD_LIBRARY_PATH',['/usr/lib:' getenv('LD_LIBRARY_PATH')])
+
+---还是不行，
+>>system(['LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH ldd /home/chang/code/actionRecog/iTDD/DenseTrackStab']);
+---发现只要有matlab自带库的路径，总会优先选用自带的
+
+>>system(['LD_LIBRARY_PATH=/usr/lib ldd /home/chang/code/actionRecog/iTDD/DenseTrackStab']);
+---直接只用系统的库，成功
+
+################# 关于PATH和LD_LIBRARY_PATH #####################
+matlab涉及的路径目前遇到的有三个
+1.搜索路径，在菜单栏，setPath可以进行设置。可以把代码或者脚本的路径添加进去，不用每次都弹窗添加路径，也可以直接在脚本中 addpath /path/to/add
+2.PATH，执行程序路径(bin),getenv('PATH')可以查看，setenv('path/to/set')可以进行设置，与系统的环境变量相对应的。系统环境变量是系统的写在/etc/profile 和etc/environment设置所有用户的环境变量。
+3.LD_LIBRARY_PATH库的路径，getenv('LD_LIBRARY_PATH')可以查看，setenv('LD_LIBRARY_PATH')可以进行设置,设置是一次性的，重启matlab恢复原值。
+
+
+REF：
+https://www.cnblogs.com/zhanglianbo/p/5648237.html
+blog.sina.com.cn/s/blog_59cf67260100l2c3.html
+
+=====================================================================================================================================================
+17.matlab读取视频报错：
+>>>video=VideoReader('test2.avi');
+   Error using VideoReader/init (line 619)
+   Could not read file due to an unexpected error. Reason: Unable to initialize the video obtain properties.
+
+---安装gstream才能支持VideoReader解码，ffmpeg不能
+sudo add-apt-repository ppa:mc3man/gstffmpeg-keep
+sudo apt-get update
+sudo apt-get install gstreamer0.10-ffmpeg
+REF:https://cn.mathworks.com/matlabcentral/answers/255157-can-t-load-video-using-videoreader-in-matlab-r2015-on-ubuntu-15-04-could-not-read-file-due-to-an-un
+
+=====================================================================================================================================================
+
+
+#zyz@civic.org.cn# 
+#include "opencv2/gpu/gpu.hpp" 但不存在这个文件
+
+
+
+
 =====================================================================================================================================================
 
 ubuntu 14.04 终端历史命令保存在 ～/.bash_history：

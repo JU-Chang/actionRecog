@@ -1,28 +1,28 @@
 # actionRecog
 
 
-#improved_trajectory-master
+# improved_trajectory-master
 ## already debug
 
-#for ariginal version:
+# for ariginal version:
 >>makedir build
 >>cd build
 >>cmake ..
 >>make
 
-#to execute the program
+# to execute the program
 >>cd build
 >>./DenseTrackStab -f videofile.avi
 
 
-#A modified version:improved trjectory_v2
+# A modified version:improved trjectory_v2
 ## 1.compile similar to iDT program
 ## 2.fixed some code that make the trajectory show successfully.
 
-#compile:
+# compile:
 >>make
 
-#to execute the program
+# to execute the program
 >>cd release
 >>./DenseTrackStab -f videofile.avi
 
@@ -46,5 +46,19 @@ I  | init_gap  | 1 | gap
 T  | show_track | 0 | whether show tracks
 ###
 
-#TDD
+# dir TDD
 extract TDD_FV feature
+
+
+## ppipeline
+(install matlab with caffe,opencv,ffmpeg)
+1.make iDT_v2:
+cd improved_trajectory_v2
+make
+
+
+2.extract iTDD:
+MATLAB: ADDPATH iTDD
+script_extraTra_ucf11.m
+
+

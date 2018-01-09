@@ -1,4 +1,14 @@
 .gitignore~
+*~
+DenseTrackStab
+*.avi
+*.bin
+script.m
+*.caffemodel
+TDD_org_debug/*
+iTDD/extract_fv.m
+iTDD/extract_pca.m
+
 
 # video & test
 test.py
