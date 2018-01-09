@@ -6,9 +6,7 @@ DenseTrackStab
 script.m
 *.caffemodel
 TDD_org_debug/*
-iTDD/extract_fv.m
-iTDD/extract_pca.m
-
+*.gitignore
 
 # video & test
 test.py

@@ -399,7 +399,6 @@ matlab涉及的路径目前遇到的有三个
 2.PATH，执行程序路径(bin),getenv('PATH')可以查看，setenv('path/to/set')可以进行设置，与系统的环境变量相对应的。系统环境变量是系统的写在/etc/profile 和etc/environment设置所有用户的环境变量。
 3.LD_LIBRARY_PATH库的路径，getenv('LD_LIBRARY_PATH')可以查看，setenv('LD_LIBRARY_PATH')可以进行设置,设置是一次性的，重启matlab恢复原值。
 
-
 REF：
 https://www.cnblogs.com/zhanglianbo/p/5648237.html
 blog.sina.com.cn/s/blog_59cf67260100l2c3.html
@@ -428,4 +427,8 @@ REF:https://cn.mathworks.com/matlabcentral/answers/255157-can-t-load-video-using
 =====================================================================================================================================================
 
 ubuntu 14.04 终端历史命令保存在 ～/.bash_history：
+ps -ef |grep tensorflow |grep python
+du -h --max-depth=1 /home/;chang/   
+du -s /home/chang/* | sort -nr | head 选出排在前面的10个
+
 
