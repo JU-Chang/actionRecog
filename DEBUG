@@ -417,6 +417,8 @@ REF:https://cn.mathworks.com/matlabcentral/answers/255157-can-t-load-video-using
 
 =====================================================================================================================================================
 
+18.linux 服务器运行 my_train.py(本地运行代码无误) 报错：
+
 
 #zyz@civic.org.cn# 
 #include "opencv2/gpu/gpu.hpp" 但不存在这个文件
