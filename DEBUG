@@ -418,13 +418,63 @@ REF:https://cn.mathworks.com/matlabcentral/answers/255157-can-t-load-video-using
 =====================================================================================================================================================
 
 18.linux 服务器运行 my_train.py(本地运行代码无误) 报错：
+OutOfRangeError (see above for traceback): RandomShuffleQueue '_1_shuffle_batch/random_shuffle_queue' is closed and has insufficient elements (requested 128, current size 0)
+     [[Node: shuffle_batch = QueueDequeueMany[_class=["loc:@shuffle_batch/random_shuffle_queue"], component_types=[DT_FLOAT, DT_INT32], timeout_ms=-1, _device="/job:localhost/replica:0/task:0/cpu:0"]
+
+---current size 0,
+====================================================================================================================================
+19.  caffe ,make all -j
+
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.././.usr//lib64lib//libopencv_highgui.sogcc:/ x86_64undefined- redhatreference- linuxto/ 4.8.5`/TIFFIsTiled.@.LIBTIFF_4.0/'.
+.//usr./.lib//.gcc.//x86_64lib64-/redhatlibopencv_highgui.so-:linux /undefined4.8.5 /reference. .to/ .`.TIFFIsTiled/@.LIBTIFF_4.0.'/
+./.usr//lib64lib//libopencv_highgui.sogcc:/ x86_64undefined- redhatreference- linuxto/ 4.8.5`/TIFFOpen.@.LIBTIFF_4.0'
+//.usr.//lib./.gcc//.x86_64.-/redhatlib64-/linuxlibopencv_highgui.so/:4.8.5 /undefined. .reference/ .to. /`.TIFFOpen.@/LIBTIFF_4.0.'.
+//lib64usr//libopencv_highgui.solib:/ gccundefined/ x86_64reference- redhatto- linux`/TIFFReadEncodedStrip4.8.5@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//.x86_64.-/redhatlib64-/linuxlibopencv_highgui.so/:4.8.5 /undefined. .reference/ .to. /`.TIFFReadEncodedStrip.@/LIBTIFF_4.0.'.
+//lib64usr//libopencv_highgui.solib:/ gccundefined/ x86_64reference- redhatto- linux`/TIFFSetField4.8.5@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//.x86_64.-/redhatlib64-/linuxlibopencv_highgui.so/:4.8.5 /undefined. .reference/ .to. /`.TIFFSetField.@/LIBTIFF_4.0.'.
+//lib64usr//libopencv_highgui.solib:/ gccundefined/ x86_64reference- redhatto- linux`/TIFFWriteScanline4.8.5@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//.x86_64.-/redhatlib64-/linuxlibopencv_highgui.so/:4.8.5 /undefined. .reference/ .to. /`.TIFFWriteScanline.@/LIBTIFF_4.0.'.
+//lib64usr//libopencv_highgui.solib:/ gccundefined/ x86_64reference- redhatto- linux`/TIFFGetField4.8.5@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//.x86_64.-/redhatlib64-/linuxlibopencv_highgui.so/:4.8.5 /undefined. .reference to /`.TIFFGetField.@/LIBTIFF_4.0.'.
+//.usr.//liblib64//gcclibopencv_highgui.so/:x86_64 -undefinedredhat -referencelinux /to4.8.5 /`.TIFFScanlineSize.@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//lib64x86_64/-libopencv_highgui.soredhat:- linuxundefined/ 4.8.5reference/ .to. /`.TIFFScanlineSize.@/LIBTIFF_4.0.'.
+//.usr.//liblib64//gcclibopencv_highgui.so/:x86_64 -undefinedredhat -referencelinux /to4.8.5 /`.TIFFSetWarningHandler.@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//lib64x86_64/-libopencv_highgui.soredhat:- linuxundefined/ 4.8.5reference/ .to. /`.TIFFSetWarningHandler.@/LIBTIFF_4.0.'.
+//.usr.//liblib64//gcclibopencv_highgui.so/:x86_64 -undefinedredhat -referencelinux /to4.8.5 /`.TIFFSetErrorHandler.@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//lib64x86_64/-libopencv_highgui.soredhat:- linuxundefined/ 4.8.5reference/ .to. /`.TIFFSetErrorHandler.@/LIBTIFF_4.0.'.
+//.usr.//liblib64//gcclibopencv_highgui.so/:x86_64 -undefinedredhat -referencelinux /to4.8.5 /`.TIFFReadEncodedTile.@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//lib64x86_64/-libopencv_highgui.soredhat:- linuxundefined/ 4.8.5reference/ .to. /`.TIFFReadEncodedTile.@/LIBTIFF_4.0.'.
+//.usr.//liblib64//gcclibopencv_highgui.so/:x86_64 -undefinedredhat -referencelinux /to4.8.5 /`.TIFFReadRGBATile.@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//lib64x86_64/-libopencv_highgui.soredhat:- linuxundefined/ 4.8.5reference/ .to. /`.TIFFReadRGBATile.@/LIBTIFF_4.0.'.
+//.usr.//liblib64//gcclibopencv_highgui.so/:x86_64 -undefinedredhat -referencelinux /to4.8.5 /`.TIFFClose.@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//lib64x86_64/-libopencv_highgui.soredhat:- linuxundefined/ 4.8.5reference/ .to. /`.TIFFClose.@/LIBTIFF_4.0.'.
+//.usr.//liblib64//gcclibopencv_highgui.so/:x86_64 -undefinedredhat -referencelinux /to4.8.5 /`.TIFFRGBAImageOK.@/LIBTIFF_4.0.'.
+//.usr.//lib./.gcc//lib64x86_64/-libopencv_highgui.soredhat:- linuxundefined/ 4.8.5reference/ .to. /`.TIFFRGBAImageOK.@/LIBTIFF_4.0.'.
+//.usr.//liblib64//gcclibopencv_highgui.so/:x86_64 -undefinedredhat -referencelinux /to4.8.5 /`.TIFFReadRGBAStrip.@/LIBTIFF_4.0.'.
+/../../lib64/libopencv_highgui.so: undefined reference to `TIFFReadRGBAStrip@LIBTIFF_4.0'
 
 
-#zyz@civic.org.cn# 
-#include "opencv2/gpu/gpu.hpp" 但不存在这个文件
+OpenCV需要libtiff4库，然而系统安装不会自带libtiff4,因此当以OpenCV为接口时编译可能会出现libopencv_highgui.so:undefined reference to `TIFFIsTiled@LIBTIFF_4.0'等
 
 
+解决方案
 
+安装libtiff4-dev：
+
+
+sudo apt-get install libtiff4-dev
+
+解决方法：在cmake 编译OpenCV时： cmake -D BUILD_TIFF=ON
+
+便会自动编译libtiff4，然后再以OpenCV做接口编译时，Bug消除！
+
+
+系统存在多个opencv库导致的caffe运行异常:undefined symbol imencode imread 
+
+REF:
+
+atlas
 
 =====================================================================================================================================================
 
