@@ -7,6 +7,7 @@ script.m
 *.caffemodel
 TDD_org_debug/*
 *.gitignore
+.~lock*
 
 # video & test
 test.py

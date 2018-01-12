@@ -8,3 +8,11 @@ source activate tensorflow
 pip install \
   -i https://pypi.tuna.tsinghua.edu.cn/simple/ \
   -upgrade https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow-0.11.0-cp27-none-linux_x86_64.whl
+
+//pycharm
+
+
+
+
+//caffe
+conda create -n
