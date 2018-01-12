@@ -41,10 +41,13 @@ for i = 1:length(classlist)
     else
         error('target file exist!')
     end
-
+    if i == (length(classlist)-5)
+        display('-5');
+    end
     videolist = getFolderList(fullfile(video_dir,'*.avi'));
    
     for k = 1:length(videolist)
+
         videofile = fullfile(video_dir,videolist{k});
         vtra_file = fullfile(vtra_dir,videolist{k});
         vtra_file = [vtra_file(1:end-4),'.bin'];
