@@ -423,7 +423,7 @@ OutOfRangeError (see above for traceback): RandomShuffleQueue '_1_shuffle_batch/
 
 ---current size 0,
 ====================================================================================================================================
-19.  caffe ,make all -j
+19. 编译 caffe ,报错
 
 /usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../.././.usr//lib64lib//libopencv_highgui.sogcc:/ x86_64undefined- redhatreference- linuxto/ 4.8.5`/TIFFIsTiled.@.LIBTIFF_4.0/'.
 .//usr./.lib//.gcc.//x86_64lib64-/redhatlibopencv_highgui.so-:linux /undefined4.8.5 /reference. .to/ .`.TIFFIsTiled/@.LIBTIFF_4.0.'/
@@ -472,7 +472,7 @@ sudo apt-get install libtiff4-dev
 
 系统存在多个opencv库导致的caffe运行异常:undefined symbol imencode imread 
 
-REF:
+
 
 atlas
 
