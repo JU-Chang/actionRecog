@@ -8,15 +8,16 @@ function ExtractSpatialCNNFeature_hmdb51(tag,scale,gpu_id)
     % 'R2016a/runtime/glnxa64:/usr/local/MATLAB/R2016a/sys/java/jre/glnxa64/'...
     % 'jre/lib/amd64/native_threads:/usr/local/MATLAB/R2016a/sys/java/jre/'...
     % 'glnxa64/jre/lib/amd64/server:/usr/local/cuda-8.0/lib64:/usr/lib/:'];
-    % setenv('LD_LIBRARY_PATH',LD_LIBRARY_PATH);
-    addpath /home/chang/caffe-action_recog/matlab/
+    % setenv('LD_LIBRARY_PATH',LD_LIBRARY_PATH);  
+%     addpath /home/chang/caffe-action_recog/matlab/
     % input:
     %       tag: 'spatial' or 'temporal'
     %       scale: a number from 1 to 
 
   % ################################################### %
-    feat_path = ['/data/HMDB51/',tag,'CnnFeature'];
-    video_path = '/data/HMDB51/hmdb51_org/unrar';
+    feat_path = ['/home/civic.org.cn/zyz/md128/HMDB51/',tag,'CnnFeature'];
+    video_path = '/home/civic.org.cn/zyz/md128/HMDB51/video';
+    log_file = ['/home/civic.org.cn/zyz/md128/HMDB51/',tag,'CnnFeature.log'];
   % ################################################### %
 
     
@@ -28,10 +29,15 @@ function ExtractSpatialCNNFeature_hmdb51(tag,scale,gpu_id)
         error(['Video dir:"',video_path,'" not exist!']); 
     end
     
+    fid = fopen(log_file,'w');
+    fprintf(fid,'%s\n',datestr(now,0));
+    log_exist = ['exist file:\n'];
+    log_error = ['error file:\n'];
+    
     if ~exist(feat_path,'dir')
         mkdir(feat_path);
-    elseif length(dir(feat_path)) > 2                 % check dir validation
-        error(['Feature file:"',feat_path,'" already exist!']); 
+%     elseif length(dir(feat_path)) > 2                 % check dir validation
+%         error(['Feature file:"',feat_path,'" already exist!']); 
     end
     
     caffe.reset_all();
@@ -77,17 +83,27 @@ function ExtractSpatialCNNFeature_hmdb51(tag,scale,gpu_id)
         end
         for k = 1:length(videolist)
             videofile = fullfile(video_dir,videolist{k});
-
-            % do..
-            [feature_c5, feature_c4] = SpatialCNNFeature(videofile, net, sizes(scale,1), sizes(scale,2));
-            cnnfeature{1} = feature_c4;
-            cnnfeature{2} = feature_c5;
-            feat_file = fullfile(path4,classlist{i},videolist{k});
+            feat_file = fullfile(feat_dir,videolist{k});
             feat_file = [feat_file(1:end-4),'.mat'];
-            save(feat_file,'cnnfeature');
+            
+            if exist(feat_file)
+                log_exist = [log_exist,feat_file,'\n'];
+                continue;
+            end
+            % do..
+            try
+                [feature_c5, feature_c4] = SpatialCNNFeature(videofile, net, sizes(scale,1), sizes(scale,2));
+                cnnfeature{1} = feature_c4;
+                cnnfeature{2} = feature_c5;
+                save(feat_file,'cnnfeature');
+            catch
+                log_error = [log_error,videofile,'\n'];
+            end
 
         end
     end
     toc;
-    caffe.reset_all();
+    fprintf(fid,'%s\n%s',log_exist,log_error);
+    fid.close();
+    
 end
