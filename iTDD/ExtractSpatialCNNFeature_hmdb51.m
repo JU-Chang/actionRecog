@@ -31,8 +31,8 @@ function ExtractSpatialCNNFeature_hmdb51(tag,scale,gpu_id)
     
     fid = fopen(log_file,'w');
     fprintf(fid,'%s\n',datestr(now,0));
-    log_exist = ['exist file:\n'];
-    log_error = ['error file:\n'];
+    log_exist = ['exist file:',char(13,10)'];
+    log_error = ['error file:',char(13,10)'];
     
     if ~exist(feat_path,'dir')
         mkdir(feat_path);
@@ -87,7 +87,7 @@ function ExtractSpatialCNNFeature_hmdb51(tag,scale,gpu_id)
             feat_file = [feat_file(1:end-4),'.mat'];
             
             if exist(feat_file)
-                log_exist = [log_exist,feat_file,'\n'];
+                log_exist = [log_exist,feat_file,char(13,10)'];
                 continue;
             end
             % do..
@@ -97,13 +97,13 @@ function ExtractSpatialCNNFeature_hmdb51(tag,scale,gpu_id)
                 cnnfeature{2} = feature_c5;
                 save(feat_file,'cnnfeature');
             catch
-                log_error = [log_error,videofile,'\n'];
+                log_error = [log_error,videofile,char(13,10)'];
             end
 
         end
     end
     toc;
     fprintf(fid,'%s\n%s',log_exist,log_error);
-    fid.close();
+    fclose(fid);
     
 end
