@@ -11,8 +11,8 @@ function extraTra_ucf101()
 % %输出以查看之
 % !echo $PATH                              
 
-data_dir = '/home/civic.org.cn/zyz/md128/UCF101/UCF-101';
-tra_dir = '/home/civic.org.cn/zyz/md128/UCF101/tra_dir';
+data_dir = '/data/UCF101/UCF-101';
+tra_dir = '/data/UCF101/tra_dir';
 
 if ~exist(tra_dir,'dir')
     mkdir(tra_dir);
