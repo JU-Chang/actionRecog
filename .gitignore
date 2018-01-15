@@ -6,7 +6,8 @@ DenseTrackStab
 script.m
 *.caffemodel
 TDD_org_debug/*
-*.gitignore
+improved_trajectory_v2/*
+.gitignore
 .~lock*
 
 # video & test

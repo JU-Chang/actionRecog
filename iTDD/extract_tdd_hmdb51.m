@@ -1,8 +1,11 @@
 % extract_tdd_hmdb51(3, 'spatial')
 function extract_tdd_hmdb51(scale,tag)
     
+    % ############################################### %
     % configure
-    data_dir = '/data/HMDB51/';
+    data_dir = '/home/civic.org.cn/zyz/md128/HMDB51';
+    log_file = ['/home/civic.org.cn/zyz/md128/HMDB51/',tag,'tdd.log'];
+    % ############################################### %
     
 %     if strcmp(tag,'spatial')
 %         layer1 = 'conv4';
@@ -20,14 +23,17 @@ function extract_tdd_hmdb51(scale,tag)
     sizes = [8,8; 11.4286,11.4286; 16,16; 22.8571,24;32,34.2587];
     
     if ~exist(path_tra,'dir') || ~exist(path_feat,'dir')              % check dir validation
-        error(['tra dir:',video_path,' or feature dir:',path_feat,' not exist!']); 
+        error(['tra dir:',path_tra,' or feature dir:',path_feat,' not exist!']); 
     end
     
     if ~exist(save_path,'dir')
         mkdir(save_path);
-    elseif length(dir(save_path)) > 2                 % check dir validation
-        error(['Feature file:"',save_path,'" already exist!']); 
     end
+    
+    fid = fopen(log_file,'w');
+    fprintf(fid,'%s\n',datestr(now,0));
+    log_exist = ['exist file:',char(13,10)'];
+    log_error = ['error file:',char(13,10)'];
     
     folderlist = dir(path_tra);
     foldername = {folderlist(:).name};
@@ -43,35 +49,48 @@ function extract_tdd_hmdb51(scale,tag)
         filelist = dir(fullfile(path_tra,[foldername{i},'/*.bin']));
         for j = 1:length(filelist)
             
-            tra_file = fullfile(path_tra,foldername{i},[filelist(j).name(1:end-4),'.bin']);
+            tdd_file = fullfile(save_path,foldername{i},[filelist(j).name(1:end-4),'.mat']);
+            if exist(tdd_file)
+                log_exist = [log_exist,tdd_file,char(13,10)'];
+                continue;
+            end
             
-            data = import_idt(tra_file);
-            info = data.info;
-            tra = data.tra;
-            if ~isempty(info)
-%                 tic;
-                feat_file = fullfile(path_feat,foldername{i},[filelist(j).name(1:end-4),'.mat']);
-                if ~exist(feat_file,'file')
-                    error('feature files not exist.')
-                end
-                f = load(feat_file);
-                cnnfeature = f.cnnfeature;
-                for k =[1,2]
+            try
+                tra_file = fullfile(path_tra,foldername{i},[filelist(j).name(1:end-4),'.bin']);
 
-                    if max(info(1,:)) > size(cnnfeature{k},4)
-                        ind =  info(1,:) <= size(cnnfeature{k},4);
-                        info = info(:,ind);
-                        tra = tra(:,ind);
+                data = import_idt(tra_file);
+                info = data.info;
+                tra = data.tra;
+                if ~isempty(info)
+    %                 tic;
+                    feat_file = fullfile(path_feat,foldername{i},[filelist(j).name(1:end-4),'.mat']);
+                    if ~exist(feat_file,'file')
+                        error('feature files not exist.')
                     end
-                    [norm_feature1, norm_feature2] = FeatureMapNormalization(feature);
-                    idt_cnn_feature{2*k-1} = TDD(info, tra, norm_feature1, sizes(scale,1), sizes(scale,2), 1);
-                    idt_cnn_feature{2*k} = TDD(info, tra, norm_feature2, sizes(scale,1), sizes(scale,2), 1)
-    %                 toc;
+                    f = load(feat_file);
+                    cnnfeature = f.cnnfeature;
+                    for k =[1,2]
+
+                        if max(info(1,:)) > size(cnnfeature{k},4)
+                            ind =  info(1,:) <= size(cnnfeature{k},4);
+                            info = info(:,ind);
+                            tra = tra(:,ind);
+                        end
+                        [norm_feature1, norm_feature2] = FeatureMapNormalization(cnnfeature{k});
+                    
+                        idt_cnn_feature{2*k-1} = TDD(info, tra, norm_feature1, sizes(scale,1), sizes(scale,2), 1);
+                        idt_cnn_feature{2*k} = TDD(info, tra, norm_feature2, sizes(scale,1), sizes(scale,2), 1);
+        %                 toc;
+                    end
+                    save(fullfile(save_path,foldername{i},[filelist(j).name(1:end-4),'.mat']),'idt_cnn_feature');
                 end
-                save(fullfile(save_path,foldername{i},[filelist(j).name(1:end-4),'.mat']),'idt_cnn_feature');
+            catch
+                log_error = [log_error,tdd_file,char(13,10)'];
             end
         end
     end
     toc;
+    fprintf(fid,'%s\n%s',log_exist,log_error);
+    fclose(fid);
 end
 
