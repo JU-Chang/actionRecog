@@ -365,6 +365,11 @@ dir(pathOfFile)
 
 fullfile(dir1,dir2,filename)
 ----相当于python的os.path.join
+
+
+matlab          vs                    python
+num2tr（num)                          str（num)
+
 =====================================================================================================================================================
 15.ubuntu运行程序
 ./filename
