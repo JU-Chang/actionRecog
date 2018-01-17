@@ -1,3 +1,4 @@
+% train_svm_hmdb51(1)
 function train_svm_hmdb51(splitType)
     
 %addpath(genpath('/home/civic.org.cn/zyz/'));
@@ -6,7 +7,7 @@ function train_svm_hmdb51(splitType)
 
 % ############################################### %
 % configure
-fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51';
+fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/fv_spatial';
 split_dir = '/home/civic.org.cn/zyz/md128/HMDB51/testTrainMulti_7030_splits';
 log_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmTrainLog';
 model_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmModel';
@@ -36,11 +37,11 @@ data = {[],[]};
 label = {{},{}};
 
 log_file = fullfile(log_dir,[datestr(now,0),'svm_fv.log']);
-model_file = fullfile(model_dir,['svm_s',splitType,datestr(now,0),'.mat'])
+model_file = fullfile(model_dir,['svm_s',num2str(splitType),datestr(now,0),'.mat']);
 fid = fopen(log_file,'w');
 fprintf(fid,'%s\n',datestr(now,0));
 log_content = ['svm config:',char(13,10)'];
-log_content = [log_content,'splitType:',splitType,char(13,10)'];
+log_content = [log_content,'splitType:',num2str(splitType),char(13,10)'];
 log_content = [log_content,'modelFile:',model_file,char(13,10)'];
 log_error = ['error file:',char(13,10)'];
 
@@ -60,8 +61,7 @@ display('svm training started ...');
 for i = 1:length(folderlist)
     foldername=folderlist{i};
 %     log_content = [log_content,foldername,' ',num2str(i), char(13,10)'];
-    
-    fsplit = fopen(fullfile(split_dir,[foldername,'_test_',num2str(splitType)]));
+    fsplit = fopen(fullfile(split_dir,[foldername,'_test_split',num2str(splitType),'.txt']));
     splitline = fgetl(fsplit);
     while ischar(splitline)
         splitline_ = strsplit(splitline);
@@ -71,7 +71,7 @@ for i = 1:length(folderlist)
             fvfeat_ = load(fvfile);
             fvfeat = fvfeat_.fvfeat;
         catch
-            log_error = [log_exist,fv_file,char(13,10)'];
+            log_error = [log_error,fvfile,char(13,10)'];
             splitline = fgetl(fsplit);
             continue;
         end
