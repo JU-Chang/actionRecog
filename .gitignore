@@ -10,6 +10,8 @@ improved_trajectory_v2/Makefile
 improved_trajectory_v2/*
 .gitignore
 .~lock*
+ttp.m
+*.mat
 
 # video & test
 test.py
