@@ -90,8 +90,9 @@ predictLabels = predict(svmModel,data{2});
 acc = strcmp(predictLabels,label{2}');
 acc = sum(acc)/length(acc);
 save(model_file,'svmModel');
+log_content = [log_content,'accuracy:',acc,char(13,10)'];
 
-display(['acc:',acc]);
+display(['acc:',num2str(acc)]);
 toc;
 fprintf(fid,'%s\n%s',log_content,log_error);
 fclose(fid);
