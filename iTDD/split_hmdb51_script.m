@@ -12,38 +12,36 @@ function split_hmdb51_script()
     if ~exist(split_dir,'dir')          % check dir validation
         error(['split dir:',split_dir,' not exist!']); 
     end
-
+    
     data = deal({[],[]});
-
-    tic;
-
-    % log_content = [log_content,'classname coding:',char(13,10)'];
+% 
+%     % log_content = [log_content,'classname coding:',char(13,10)'];
     folderlist = dir(fullfile(split_dir,['*test_split',num2str(split_type),'.txt']));
-    folderlist = {folderlist(:).name;
-    length(folderlist)
-%     for i=1:length(folderlist)
-%         split_file=folderlist{i};
-%     %     log_content = [log_content,foldername,' ',num2str(i), char(13,10)'];
-%         classname = split_file(1:end-16);
-%         fsplit = fopen(split_file);
-%         splitline = fgetl(fsplit);
-%         while ischar(splitline)
-%             splitline_ = strsplit(splitline);
-%             videoname = splitline_{1};
-%             istrain = str2num(splitline_{2});
-%             if (istrain)
-%                 data{istrain} = [data{istrain},classname,'/',videoname];
-%             end
-%             splitline = fgetl(fsplit);
-%         end 
-%         fclose(fsplit);
-%     end
+    folderlist = {folderlist(:).name};
+    for i=1:length(folderlist)
+        split_file=folderlist{i};
+    %     log_content = [log_content,foldername,' ',num2str(i), char(13,10)'];
+        classname = split_file(1:end-16);
+        fsplit = fopen(fullfile(split_dir,split_file));
+        splitline = fgetl(fsplit);
+        while ischar(splitline)
+            splitline_ = strsplit(splitline);
+            videoname = splitline_{1};
+            istrain = str2num(splitline_{2});
+            if (istrain)
+                data{istrain} = [data{istrain},classname,'/',videoname,char(13,10)'];
+            end
+            splitline = fgetl(fsplit);
+        end 
+        fclose(fsplit);
+    end
 
-    fid = fopen(train_split,'w');
-    fprintf(fid,data{1});
-    fclose(fid);
-    fid = fopen(test_split,'w');
-    fprintf(fid,data{2});
-    fclose(fid);
+    fts = fopen(train_split,'w');
+    fprintf(fts,data{1});
+    fclose(fts);
+    fts2 = fopen(test_split,'w');
+    fprintf(fts2,data{2});
+    fclose(fts2);
+    disp('done');
 end
 

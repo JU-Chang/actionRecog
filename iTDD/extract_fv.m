@@ -1,6 +1,7 @@
 % extract_fv(3,'spatial')
 function  extract_fv(scale,tag)
 addpath(genpath('/home/civic.org.cn/zyz/md128/toolbox'));
+run('/home/civic.org.cn/zyz/vlfeat/toolbox/vl_setup')
 %input:
 %   layer:3 or 5
 
@@ -10,14 +11,13 @@ data_dir = '/home/civic.org.cn/zyz/md128/HMDB51';
 log_file = ['/home/civic.org.cn/zyz/md128/HMDB51/',tag,'fv.log'];
 % ############################################### %
 
-
-path_tdd = fullfile(data_dir,['tdd_',tag,'_scale_',num2str(scale)]);
-pca_gmm = fullfile(data_dir,'pca_gmm.mat');
-fv_dir = fullfile(data_dir,['fv_', tag]);
-
 dim = 64;
 num = 256;
-pca_sample = 100;
+pca_sample = 6;
+fv_dir = fullfile(data_dir,['fv_', tag,'_psam_',num2str(pca_sample)]);
+pca_gmm = fullfile(data_dir,'pca_gmm_psam_',num2str(pca_sample),'.mat');
+path_tdd = fullfile(data_dir,['tdd_',tag,'_scale_',num2str(scale)]);
+
 
 if ~exist(path_tdd,'dir')          % check dir validation
     error(['tdd dir:',path_tdd,' not exist!']); 
@@ -43,28 +43,37 @@ function [U,mu,means, covariances, priors] = extract_pca(tdd_dir,d,numCluster,sa
     
     classes = getFolderList(tdd_dir);
 	pcatrain = {[],[],[],[]};
-% 	gmmtrain = {[],[],[],[]};
+	gmmtrain = {[],[],[],[]};
+    
+    if ~exist('pcatrain.mat')
+        tmp1 = load('pcatrain.mat');
+        pcatrain = tmp1.pcatrain;
+        tmp2 = load('gmmtrain.mat');
+        pcatrain = tmp2.gmmtrain;
+    else
+        for cclassname=classes
+    % 		display(classname);
+            classname=cclassname{:};
+            tddfiles = getFolderList(fullfile(tdd_dir,classname,'*.mat'));
+            for cfilename = tddfiles
+                filename =cfilename{:};
+                tdd_feature = load(fullfile(tdd_dir,classname,filename));
+                tdd_feature = tdd_feature.idt_cnn_feature;
 
-	for cclassname=classes
-% 		display(classname);
-        classname=cclassname{:};
-        tddfiles = getFolderList(fullfile(tdd_dir,classname,'*.mat'));
-        for cfilename = tddfiles
-            filename =cfilename{:};
-			tdd_feature = load(fullfile(tdd_dir,classname,filename));
-            tdd_feature = tdd_feature.idt_cnn_feature;
-            
-            try
-                for kk = linspace(1,4,4)
-                    pcatrain{kk} = [pcatrain{kk} datasample(tdd_feature{kk},sample_num,2)]; 
-        %             size(pcatrain)
-                    gmmtrain{kk} = [gmmtrain{kk} datasample(tdd_feature{kk},sample_num,2)];  
+                try
+                    for kk = linspace(1,4,4)
+%                         pcatrain{kk} = [pcatrain{kk} datasample(tdd_feature{kk},sample_num,2)]; 
+            %             size(pcatrain)
+                        gmmtrain{kk} = [gmmtrain{kk} datasample(tdd_feature{kk},sample_num,2)];  
+                    end
+                catch
+                    disp(filename);
                 end
-            catch
-                disp(filename);
             end
         end
-	end
+%         save('pcatrain.mat','pcatrain');
+        save('gmmtrain.mat','gmmtrain');
+    end
 % 	save '/data1/fisher/pcatrain.mat' pcatrain;
 % 	save '/data1/fisher/gmmtrain.mat' gmmtrain;
 
@@ -84,11 +93,11 @@ function [U,mu,means, covariances, priors] = extract_pca(tdd_dir,d,numCluster,sa
 end
 
 if ~exist(pca_gmm)
-    [U,mu,means, covariances, priors] = extract_pca(path_tdd,dim,num,pca_sample);
+    [fU,fmu,fmeans, fcovariances, fpriors] = extract_pca(path_tdd,dim,num,pca_sample);
     save(pca_gmm,'fU','fmu','fmeans', 'fcovariances', 'fpriors');
 end
 temp = load(pca_gmm);
-[U,mu,means, covariances, priors] = deal(temp.U,temp.mu,temp.means,temp.covariances,temp.priors);
+[U,mu,means, covariances, priors] = deal(temp.fU,temp.fmu,temp.fmeans,temp.fcovariances,temp.fpriors);
 
 tic;
 
