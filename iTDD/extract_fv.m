@@ -15,7 +15,7 @@ dim = 64;
 num = 256;
 pca_sample = 6;
 fv_dir = fullfile(data_dir,['fv_', tag,'_psam_',num2str(pca_sample)]);
-pca_gmm = fullfile(data_dir,'pca_gmm_psam_',num2str(pca_sample),'.mat');
+pca_gmm = fullfile(data_dir,['pca_gmm_psam_',num2str(pca_sample),'.mat']);
 path_tdd = fullfile(data_dir,['tdd_',tag,'_scale_',num2str(scale)]);
 
 
@@ -45,11 +45,11 @@ function [U,mu,means, covariances, priors] = extract_pca(tdd_dir,d,numCluster,sa
 	pcatrain = {[],[],[],[]};
 	gmmtrain = {[],[],[],[]};
     
-    if ~exist('pcatrain.mat')
+    if exist('pcatrain.mat')
         tmp1 = load('pcatrain.mat');
         pcatrain = tmp1.pcatrain;
         tmp2 = load('gmmtrain.mat');
-        pcatrain = tmp2.gmmtrain;
+        gmmtrain = tmp2.gmmtrain;
     else
         for cclassname=classes
     % 		display(classname);
