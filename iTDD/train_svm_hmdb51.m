@@ -7,7 +7,7 @@ function train_svm_hmdb51(splitType)
 
     % ############################################### %
     % configure
-    fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/fv_spatial_psam_6';
+    fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/fv_spatial_psam_32_dim_64';
     split_dir = '/home/civic.org.cn/zyz/md128/HMDB51';
     log_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmTrainLog';
     model_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmModel';
@@ -36,8 +36,8 @@ function train_svm_hmdb51(splitType)
     % data = {[],[]};
     % label = {{},{}};
 
-    train_split_file = fullfile(split_dir,['hmdb51_train_split',num2str(split_type),'.txt']);
-    test_split_file = fullfile(split_dir,['hmdb51_test_split',num2str(split_type),'.txt']);
+    train_split_file = fullfile(split_dir,['hmdb51_train_split',num2str(splitType),'.txt']);
+    test_split_file = fullfile(split_dir,['hmdb51_test_split',num2str(splitType),'.txt']);
     log_file = fullfile(log_dir,[datestr(now,0),'svm_fv.log']);
     model_file = fullfile(model_dir,['svm_s',num2str(splitType),datestr(now,0),'.mat']);
 
@@ -94,9 +94,10 @@ function train_svm_hmdb51(splitType)
         ddata = [];
         llabel = {};
         while ischar(splitline)
-            splitline_ = strsplit(splitline);
-            videoname = splitline_{1};
-            fvfile = fullfile(fv_dir,foldername,[videoname(1:end-4),'.mat']);
+            splitline_ = strsplit(splitline,'/');
+            videoname = splitline_{2};
+            foldername = splitline_{1};
+            fvfile = fullfile(fv_dir,foldername,[videoname,'.mat']);
             try
                 fvfeat_ = load(fvfile);
                 fvfeat = fvfeat_.fvfeat;
@@ -112,20 +113,21 @@ function train_svm_hmdb51(splitType)
         
         fclose(fspt);
     end
-
+    
+    tic
     disp('get data ...');
-    if ~exist('data.mat')
-        [data{1},label{1},log_error] = get_data(train_split_file,log_error);
-        [data{2},label{2},log_error] = get_data(test_split_file,log_error);
-        save('data.mat','data','label')
-    end
+%     if ~exist('data.mat')
+    [data{1},label{1},log_error] = get_data(train_split_file,log_error);
+    [data{2},label{2},log_error] = get_data(test_split_file,log_error);
+%         save('data.mat','data','label')
+%     end
     
     svmModel = fitcecoc(data{1},label{1}');
     predictLabels = predict(svmModel,data{2});
     acc = strcmp(predictLabels,label{2}');
     acc = sum(acc)/length(acc);
     save(model_file,'svmModel');
-    log_content = [log_content,'accuracy:',acc,char(13,10)'];
+    log_content = [log_content,'accuracy:',num2str(acc),char(13,10)'];
 
     display(['acc:',num2str(acc)]);
     toc;

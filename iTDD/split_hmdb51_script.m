@@ -13,7 +13,8 @@ function split_hmdb51_script()
         error(['split dir:',split_dir,' not exist!']); 
     end
     
-    data = deal({[],[]});
+    data = deal({{},{}});
+%     data = deal({[],[]});
 % 
 %     % log_content = [log_content,'classname coding:',char(13,10)'];
     folderlist = dir(fullfile(split_dir,['*test_split',num2str(split_type),'.txt']));
@@ -29,18 +30,31 @@ function split_hmdb51_script()
             videoname = splitline_{1};
             istrain = str2num(splitline_{2});
             if (istrain)
-                data{istrain} = [data{istrain},classname,'/',videoname,char(13,10)'];
+                data{istrain}{end+1} = [classname,'/',videoname(1:end-4),char(13,10)'];
+%                 data{istrain} = [data{istrain},classname,'/',videoname(1:end-4),char(13,10)'];
+
             end
             splitline = fgetl(fsplit);
         end 
         fclose(fsplit);
     end
 
+    rdata1 = data{1}(randperm(length(data{1})));
+%     disp(size(rdata1))
+%     disp(class(rdata1))
+    rdata1 = cell2mat(rdata1);
+    rdata2 = data{2}(randperm(length(data{2})));
+%     disp(size(rdata2))
+%     disp(class(rdata2))
+
+    rdata2 = cell2mat(rdata2);
     fts = fopen(train_split,'w');
-    fprintf(fts,data{1});
+    fprintf(fts,rdata1);
+%     fprintf(fts,data{1});
     fclose(fts);
     fts2 = fopen(test_split,'w');
-    fprintf(fts2,data{2});
+    fprintf(fts2,rdata2);
+%     fprintf(fts2,data{2});
     fclose(fts2);
     disp('done');
 end
