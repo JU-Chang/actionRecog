@@ -60,6 +60,4 @@ function [feature] = TDD(inf,tra,cnn_feature,scale_x,scale_y,num_cell)
     else
         feature = [];
     end
-
-
 end
