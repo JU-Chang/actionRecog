@@ -7,7 +7,7 @@ function train_svm_hmdb51(splitType)
 
     % ############################################### %
     % configure
-    fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/fv_spatial_psam_10_dim_64';
+    fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/fv_spatial_psam_72_dim_64';
     split_dir = '/home/civic.org.cn/zyz/md128/HMDB51';
     log_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmTrainLog';
     model_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmModel';

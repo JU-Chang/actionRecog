@@ -13,7 +13,7 @@ log_file = ['/home/civic.org.cn/zyz/md128/HMDB51/',tag,'fv.log'];
 
 dim = 64;
 num = 256;
-pca_sample = 10;
+pca_sample = 72;
 fv_dir = fullfile(data_dir,['fv_', tag,'_psam_',num2str(pca_sample),'_dim_',num2str(dim)]);
 pca_gmm = fullfile(data_dir,['pca_gmm_psam_',num2str(pca_sample),'_dim_',num2str(dim),'.mat']);
 path_tdd = fullfile(data_dir,['tdd_',tag,'_scale_',num2str(scale)]);
@@ -90,7 +90,7 @@ function [U,mu,means, covariances, priors] = extract_pca(tdd_dir,d,numCluster,sa
 % 	save '/data1/fisher/pca_space.mat' U mu; 
 	
 % 	save '/data1/fisher/gmm_features.mat' means covariances priors; 	
-end
+end                                                        
 
 if ~exist(pca_gmm)
     [fU,fmu,fmeans, fcovariances, fpriors] = extract_pca(path_tdd,dim,num,pca_sample);
