@@ -13,7 +13,7 @@ log_file = ['/data/UCF101/',tag,'fv.log'];
 
 dim = 64;
 num = 256;
-pca_sample = 6;
+pca_sample = 72;
 fv_dir = fullfile(data_dir,['fv_', tag,'_psam_',num2str(pca_sample),'_dim_',num2str(dim)]);
 pca_gmm = fullfile(data_dir,['pca_gmm_psam_',num2str(pca_sample),'_dim_',num2str(dim),'.mat']);
 path_tdd = fullfile(data_dir,['tdd_',tag,'_scale_',num2str(scale)]);
