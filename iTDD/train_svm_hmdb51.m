@@ -5,10 +5,14 @@ function train_svm_hmdb51(splitType)
     %input:
     %   splitType:[1,2,3],choose a split txt file
 
-    % ############################################### %
+    % #############################
+    
+    %
     % configure
-    fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/fv_spatial_psam_72_dim_64';
+    %fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/ifv_spatial_psam_6_dim_64';
+    fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/ifv_spatial_psam_6_dim_64';
     split_dir = '/home/civic.org.cn/zyz/md128/HMDB51';
+    
     log_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmTrainLog';
     model_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmModel';
     % ############################################### %
@@ -135,4 +139,32 @@ function train_svm_hmdb51(splitType)
     fprintf(fid,'%s\n',datestr(now,0));
     fprintf(fid,'%s\n%s',log_content,log_error);
     fclose(fid);
+    
+    
+    mail = 'zhang_yinzhu@sina.com';  % ①邮箱地址
+    password = '133781'; % ②密码a
+    % 服务器设置
+    setpref('Internet','E_mail',mail);
+    setpref('Internet','SMTP_Server','smtp.sina.com'); % ③SMTP服务器
+    setpref('Internet','SMTP_Username',mail);
+    setpref('Internet','SMTP_Password',password);
+    props = java.lang.System.getProperties;
+    props.setProperty('mail.smtp.auth','true');
+    props.setProperty('mail.smtp.socketFactory.class', 'javax.net.ssl.SSLSocketFactory');
+    props.setProperty('mail.smtp.socketFactory.port','465');
+
+
+
+    % 收件人
+    receiver='zhang-yinzhu@qq.com'; 
+    % 邮件标题
+    mailtitle='!!!** ACTION RECOGNITION';
+
+    % 邮件内容
+    mailcontent=[fv_dir,char(13,10)','acc:',...
+        str(acc)];
+%     mailcontent=['mission compeleted!  ',...
+%         'accuracy=',num2str(accuracy)];
+    % 发送
+    sendmail(receiver, mailtitle, mailcontent); 
 end
