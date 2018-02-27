@@ -130,7 +130,9 @@ for cfoldername=folderlist
             for i=linspace(1,4,4)    
                 tddfeature_pca = pcaApply(tddfeature{i},U{i},mu{i},dim); 
                 fvfeat{i} = vl_fisher(single(tddfeature_pca),single(means{i}),single(covariances{i}),single(priors{i}));
+                % pwer-L2 norm
                 % L2 norm
+                fvfeat{i} = sign(fvfeat{i}).*sqrt(abs(fvfeat{i}));
                 fvfeat{i} = bsxfun(@rdivide,fvfeat{i},eps+sqrt(sum(fvfeat{i}.^2)));
     % 			gmmtrain = [gmmtrain datasample(tdd_feature_spatial_conv4_norm_1,6,2) datasample(tdd_feature_spatial_conv4_norm_2,6,2) datasample(tdd_feature_spatial_conv5_norm_1,6,2) datasample(tdd_feature_spatial_conv5_norm_2,6,2) ]; 
             end
