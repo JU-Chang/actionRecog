@@ -1,3 +1,6 @@
+extract_itdd_ucf101.m
+iTDD.m
+README.md
 .gitignore~
 *~
 DenseTrackStab
