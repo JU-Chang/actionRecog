@@ -14,8 +14,9 @@ log_file = ['/home/civic.org.cn/zyz/md128/HMDB51/',tag,'fv.log'];
 dim = 64;
 num = 256;
 pca_sample = 6;
-fv_dir = fullfile(data_dir,['pnorm_fv_', tag,'_psam_',num2str(pca_sample),'_dim_',num2str(dim)]);
-pca_gmm = fullfile(data_dir,['temp/pca_gmm_psam_',num2str(pca_sample),'_dim_',num2str(dim),'.mat']);
+fv_dir = fullfile(data_dir,['fv_', tag,'_psam_',num2str(pca_sample),'_dim_',num2str(dim),'_scale_',num2str(scale)]);
+% pca_gmm = fullfile(data_dir,['temp/pca_gmm_psam_',num2str(pca_sample),'_dim_',num2str(dim),'.mat']);
+pca_gmm = fullfile(data_dir,['temp/pca_gmm_p_',num2str(pca_sample),'_d_',num2str(dim),'_s_', num2str(scale),'.mat']);
 path_tdd = fullfile(data_dir,['tdd_',tag,'_scale_',num2str(scale)]);
 
 
@@ -45,10 +46,10 @@ function [U,mu,means, covariances, priors] = extract_pca(tdd_dir,d,numCluster,sa
 	pcatrain = {[],[],[],[]};
 	gmmtrain = {[],[],[],[]};
     
-    if exist(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'])
-        tmp1 = load(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat']);
+    if exist(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'_s_', num2str(scale),'.mat'])
+        tmp1 = load(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'_s_', num2str(scale),'.mat']);
         pcatrain = tmp1.pcatrain;
-        tmp2 = load(['temp/gmmtrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat']);
+        tmp2 = load(['temp/gmmtrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'_s_', num2str(scale),'.mat']);
         gmmtrain = tmp2.gmmtrain;
     else
         for cclassname=classes
@@ -71,8 +72,8 @@ function [U,mu,means, covariances, priors] = extract_pca(tdd_dir,d,numCluster,sa
                 end
             end
         end
-        save(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'],'pcatrain');
-        save(['temp/gmmtrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'],'gmmtrain');
+        save(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'_s_', num2str(scale),'.mat'],'pcatrain');
+        save(['temp/gmmtrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'_s_', num2str(scale),'.mat'],'gmmtrain');
     end
 % 	save '/data1/fisher/pcatrain.mat' pcatrain;
 % 	save '/data1/fisher/gmmtrain.mat' gmmtrain;

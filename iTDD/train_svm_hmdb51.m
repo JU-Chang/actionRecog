@@ -1,4 +1,5 @@
-% train_svm_hmdb51(1)
+% 
+
 function train_svm_hmdb51(splitType)
     
     %addpath(genpath('/home/civic.org.cn/zyz/'));
@@ -10,7 +11,7 @@ function train_svm_hmdb51(splitType)
     %
     % configure
     %fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/ifv_spatial_psam_6_dim_64';
-    fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/ifv_spatial_psam_6_dim_64';
+    fv_dir = '/home/civic.org.cn/zyz/md128/HMDB51/pnorm_fv_2spatial_psam_6_dim_64';
     split_dir = '/home/civic.org.cn/zyz/md128/HMDB51';
     
     log_dir = '/home/civic.org.cn/zyz/md128/HMDB51/svmTrainLog';
@@ -162,7 +163,7 @@ function train_svm_hmdb51(splitType)
 
     % 邮件内容
     mailcontent=[fv_dir,char(13,10)','acc:',...
-        str(acc)];
+        num2str(acc)];
 %     mailcontent=['mission compeleted!  ',...
 %         'accuracy=',num2str(accuracy)];
     % 发送
