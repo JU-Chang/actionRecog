@@ -78,8 +78,8 @@ function extract_tdd_ucf101(scale,tag)
                         end
                         [norm_feature1, norm_feature2] = FeatureMapNormalization(cnnfeature{k});
                     
-                        idt_cnn_feature{2*k-1} = TDD(info, tra, norm_feature1, sizes(scale,1), sizes(scale,2), 1);
-                        idt_cnn_feature{2*k} = TDD(info, tra, norm_feature2, sizes(scale,1), sizes(scale,2), 1);
+                        idt_cnn_feature{2*k-1} = iTDD(info, tra, norm_feature1, sizes(scale,1), sizes(scale,2), 1);
+                        idt_cnn_feature{2*k} = iTDD(info, tra, norm_feature2, sizes(scale,1), sizes(scale,2), 1);
         %                 toc;
                     end
                     save(fullfile(save_path,foldername{i},[filelist(j).name(1:end-4),'.mat']),'idt_cnn_feature');

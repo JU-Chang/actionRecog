@@ -7,7 +7,7 @@ function train_svm_ucf101(splitType)
 
     % ############################################### %
     % configure
-    fv_dir = '/data/UCF101/fv_spatial_psam_6_dim_64';
+    fv_dir = '/data/UCF101/pnormfv_spatial_psam_6_dim_64';
     split_dir = '/data/UCF101/ucfTrainTestlist';
     log_dir = '/data/UCF101/svmTrainLog';
     model_dir = '/data/UCF101/svmModel';

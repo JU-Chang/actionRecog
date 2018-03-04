@@ -13,9 +13,9 @@ log_file = ['/data/UCF101/',tag,'fv.log'];
 
 dim = 64;
 num = 256;
-pca_sample = 72;
-fv_dir = fullfile(data_dir,['fv_', tag,'_psam_',num2str(pca_sample),'_dim_',num2str(dim)]);
-pca_gmm = fullfile(data_dir,['pca_gmm_psam_',num2str(pca_sample),'_dim_',num2str(dim),'.mat']);
+pca_sample = 6;
+fv_dir = fullfile(data_dir,['pnormfv_', tag,'_psam_',num2str(pca_sample),'_dim_',num2str(dim)]);
+pca_gmm = fullfile(data_dir,['temp/pca_gmm_psam_',num2str(pca_sample),'_dim_',num2str(dim),'.mat']);
 path_tdd = fullfile(data_dir,['tdd_',tag,'_scale_',num2str(scale)]);
 
 
@@ -45,10 +45,10 @@ function [U,mu,means, covariances, priors] = extract_pca(tdd_dir,d,numCluster,sa
 	pcatrain = {[],[],[],[]};
 	gmmtrain = {[],[],[],[]};
     
-    if exist(['pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'])
-        tmp1 = load(['pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat']);
+    if exist(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'])
+        tmp1 = load(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat']);
         pcatrain = tmp1.pcatrain;
-        tmp2 = load(['gmmtrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat']);
+        tmp2 = load(['temp/gmmtrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat']);
         gmmtrain = tmp2.gmmtrain;
     else
         for cclassname=classes
@@ -71,8 +71,8 @@ function [U,mu,means, covariances, priors] = extract_pca(tdd_dir,d,numCluster,sa
                 end
             end
         end
-        save(['pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'],'pcatrain');
-        save(['gmmtrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'],'gmmtrain');
+        save(['temp/pcatrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'],'pcatrain');
+        save(['temp/gmmtrain','_p_',num2str(pca_sample),'_d_',num2str(dim),'.mat'],'gmmtrain');
     end
 % 	save '/data1/fisher/pcatrain.mat' pcatrain;
 % 	save '/data1/fisher/gmmtrain.mat' gmmtrain;
@@ -130,6 +130,10 @@ for cfoldername=folderlist
             for i=linspace(1,4,4)    
                 tddfeature_pca = pcaApply(tddfeature{i},U{i},mu{i},dim); 
                 fvfeat{i} = vl_fisher(single(tddfeature_pca),single(means{i}),single(covariances{i}),single(priors{i}));
+                % pwer-L2 norm
+                % L2 norm
+                fvfeat{i} = sign(fvfeat{i}).*sqrt(abs(fvfeat{i}));
+                fvfeat{i} = bsxfun(@rdivide,fvfeat{i},eps+sqrt(sum(fvfeat{i}.^2)));
     % 			gmmtrain = [gmmtrain datasample(tdd_feature_spatial_conv4_norm_1,6,2) datasample(tdd_feature_spatial_conv4_norm_2,6,2) datasample(tdd_feature_spatial_conv5_norm_1,6,2) datasample(tdd_feature_spatial_conv5_norm_2,6,2) ]; 
             end
             save(fv_file,'fvfeat');
